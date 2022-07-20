@@ -1,1 +1,1 @@
-var test = `测试${test}测试`
+var test = (name) => `我要${name}测试`
