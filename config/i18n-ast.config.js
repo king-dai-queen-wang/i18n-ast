@@ -1,6 +1,6 @@
 module.exports = {
-  entry: "t",
+  entry: "./example",
   output: "u",
-  exclude: ['*-*.jsx'],
+  exclude: [],
   randomFuc: (filePath) => `${filePath.split('/').pop()}-${Math.random().toString(36).substr(2)}`,
 }
