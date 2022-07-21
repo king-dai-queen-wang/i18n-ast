@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import ButtonBasics from './components/buttonBasics';
-
+import {withMultiLanguageHOC} from './components/MultiLanguage';
 function App() {
   return (
     <div className="App">
@@ -24,4 +24,4 @@ function App() {
   );
 }
 
-export default App;
+export default withMultiLanguageHOC(App);
