@@ -1,0 +1,16 @@
+module.exports = {
+'App.js-bfz7bi1abaa': '学习 react 好啊',
+'App.js-cl7u31th7nt': '你好',
+'App.js-kiciifcswz': '保存刷新',
+'ButtonBasics.jsx-20qubjeqoh7': '问问',
+'ButtonBasics.jsx-2lo94gs9rs6': '确认',
+'ButtonBasics.jsx-8rjegiwelf3': '代',
+'ButtonBasics.jsx-e5nsj9xn8ru': '代维维',
+'ButtonBasics.jsx-oacn4c6f33h': '点我',
+'ButtonBasics.jsx-v9rp2m5uydr': '薇',
+'ButtonBasics.jsx-wz6yst1b29': '的',
+'buttonBasics.jsx-2j9hfuyzrk': '你点击了按钮!',
+'buttonBasics.jsx-kxvk90tvum': '点我啊',
+'funcArgu.js-zgv5zied9w': '测试',
+'template.js-gytmackrwo': '我要{name}测试',
+}
