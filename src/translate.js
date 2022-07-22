@@ -1,7 +1,8 @@
 const fs = require('fs');
 const prettier = require("prettier");
-const babel = require("babel-core");
-const generator = require('babel-generator')
+const babel = require("@babel/core");
+const generator = require('@babel/generator')
+const parser = require('@babel/parser');
 
 const middleRandomStr = (function(randomStr, ...argu) {
   return () => randomStr(...argu)
@@ -17,13 +18,27 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
   const transformOptions = {
     sourceType: "module",
     // code: false,
-    plugins: ["syntax-jsx", "syntax-class-properties",
-    "syntax-object-rest-spread", 'syntax-decorators',
-    'syntax-async-generators', "syntax-do-expressions",
-    "syntax-dynamic-import", "syntax-export-extensions",
-    "syntax-flow", "syntax-function-bind",
-    "syntax-function-sent",
-    plugin]
+    ast: true,
+    presets:[
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ],
+    plugins: [
+    "@babel/plugin-syntax-jsx", 
+    "@babel/plugin-syntax-typescript",
+    "@babel/plugin-syntax-class-properties",
+    "@babel/plugin-syntax-object-rest-spread",
+    // ['@babel/plugin-proposal-decorators', {version: "2021-12",decoratorsBeforeExport: false}],
+    ["@babel/plugin-syntax-decorators",{version: "2021-12"}], 
+    "@babel/plugin-syntax-async-generators",
+    "@babel/plugin-syntax-do-expressions",
+    "@babel/plugin-syntax-optional-chaining",
+    "@babel/plugin-syntax-dynamic-import", 
+    "@babel/plugin-syntax-flow", 
+    "@babel/plugin-syntax-function-bind",
+    "@babel/plugin-syntax-function-sent",
+    plugin
+  ]
   }
   const bableObj = babel.transformFileSync(filePath, option || transformOptions)
   let { code, ast } = bableObj;

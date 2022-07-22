@@ -11,7 +11,8 @@ const queue = [{
   type: 'collectAndWrite',
   params: ['entry', 'output'],
   do: () => collectAndWrite(option).start()
-}, {
+}, 
+{
   type: 'excelPack',
   params: ['pack'],
   do: () => excelPack(option).start()
