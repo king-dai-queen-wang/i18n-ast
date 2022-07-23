@@ -1,6 +1,7 @@
 module.exports = {
-  entry: "./example",
-  output: "./example/my-app/src/locales/",
+  entry: "./example", 
+  //entry: "/Users/david/Desktop/projects/atta-app/src",
+  output: "./u",
   exclude: [
     "**/node_modules/**/*",
    "my-app/src/components/MultiLanguage.jsx",
