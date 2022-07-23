@@ -20,25 +20,29 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
     // code: false,
     ast: true,
     presets:[
-      "@babel/preset-env",
-      "@babel/preset-react"
+      // "@babel/preset-flow",
+      // "@babel/preset-env",
+      // "@babel/preset-react",
+      
     ],
     plugins: [
-    "@babel/plugin-syntax-jsx", 
-    "@babel/plugin-syntax-typescript",
-    "@babel/plugin-syntax-class-properties",
-    "@babel/plugin-syntax-object-rest-spread",
-    // ['@babel/plugin-proposal-decorators', {version: "2021-12",decoratorsBeforeExport: false}],
-    ["@babel/plugin-syntax-decorators",{version: "2021-12"}], 
-    "@babel/plugin-syntax-async-generators",
-    "@babel/plugin-syntax-do-expressions",
-    "@babel/plugin-syntax-optional-chaining",
-    "@babel/plugin-syntax-dynamic-import", 
-    "@babel/plugin-syntax-flow", 
-    "@babel/plugin-syntax-function-bind",
-    "@babel/plugin-syntax-function-sent",
-    plugin
-  ]
+      "@babel/plugin-syntax-jsx", 
+      ["@babel/plugin-syntax-typescript", {isTSX: true}],
+      "@babel/plugin-syntax-class-properties",
+      "@babel/plugin-syntax-object-rest-spread",
+      // // ['@babel/plugin-proposal-decorators', {version: "2021-12",decoratorsBeforeExport: false}],
+      ["@babel/plugin-syntax-decorators",{version: "2021-12", decoratorsBeforeExport: true}], 
+      "@babel/plugin-syntax-async-generators",
+      "@babel/plugin-syntax-do-expressions",
+      "@babel/plugin-syntax-optional-chaining",
+      "@babel/plugin-syntax-dynamic-import", 
+      "@babel/plugin-syntax-export-namespace-from",
+      "@babel/plugin-syntax-export-default-from",
+      "@babel/plugin-syntax-flow", 
+      "@babel/plugin-syntax-function-bind",
+      "@babel/plugin-syntax-function-sent",
+      plugin
+    ]
   }
   const bableObj = babel.transformFileSync(filePath, option || transformOptions)
   let { code, ast } = bableObj;
@@ -53,7 +57,7 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
 
   return {
     isRewriting: translateWordsNum !== 0,
-    code: prettier.format(code, { parser: "babylon", singleQuote: true })
+    code: code //prettier.format(code, { parser: "babylon", singleQuote: true })
   };
 }
 
