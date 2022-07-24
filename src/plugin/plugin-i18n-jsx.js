@@ -12,16 +12,27 @@ const baseType = function(v) {
 const judgeChinese = function(text) {
   return /[\u4e00-\u9fa5]/.test(text);
 }
-
+/**
+ * 
+ * @param {*} allTranslateWord 已经翻译过的文件 {val: key}
+ * @param {*} randomStr 生成随机str方法
+ * @param {*} arg 外面传进来的参数
+ 初始化参数 arg = {
+  translateWordsNum: 0, 翻译的计数
+  hasImportModule: false, 是/否 头上导入过import intl from 'react-intl-universal';
+}
+ * @returns  翻译文件的value （可能带变量）
+ */
 function reactPlugin (allTranslateWord, randomStr, arg) {
+  // variableObj 翻译的字符串里有变量的情况
   function makeReplace({value, variableObj}) {
-    arg.translateWordsNum++;
+    arg.translateWordsNum++; // 
     let key = randomStr();
     const val = value;
-    if(allTranslateWord[val]) {
+    if(allTranslateWord[val]) { // 如果已经翻译过 直接拿出来key
       key = allTranslateWord[val];
     } else {
-      allTranslateWord[val] = key
+      allTranslateWord[val] = key // 如果没有翻译过， 生成新的key 
     }
     
     // 用于防止中文转码为 unicode
@@ -58,12 +69,14 @@ function reactPlugin (allTranslateWord, randomStr, arg) {
     }
     return null;
   }
-
+  // 最终返回的是plugin
   const plugin = function ({ types: t }) {
     return {
       visitor: {
+        // 只处理import节点
         ImportDeclaration(path) {
           const { node } = path;
+          // 判断该文件有 是否导入过react-intl-universal ，则把 arg.hasImportModule标记true
           if (node.source.value === 'react-intl-universal') {
             arg.hasImportModule = true;
           }
@@ -80,16 +93,18 @@ function reactPlugin (allTranslateWord, randomStr, arg) {
           }
           path.skip();
         },
+        // 匹配函数执行的node
         CallExpression(path) {
-          // 跳过 intl.get() 格式
           if (path.node.callee.type === "MemberExpression") {
             try{
+              // 判断是intl.get(xxxx)方法的调用
               if(path.node.callee.object.callee.object.name === 'intl' && path.node.callee.object.callee.property.name === 'get') {
+                // key = 拿到 intl.get(key).d(val) 格式 中的 key
                 const key = path.node.callee.object.arguments[0].value;
                 if(path.node.callee.property.name === "d") {
-                  // 已经转换成 intl.get().d() 格式
+                  //value = 拿到 intl.get(key).d(val) 格式 中的 val
                   const value = path.node.arguments[0].value
-                  // console.log(`"${key}": "${value}"`)
+                  console.log(`"${key}": "${value}"`)
                 }
               }
             } catch(e) {
@@ -99,7 +114,7 @@ function reactPlugin (allTranslateWord, randomStr, arg) {
             return;
           }
         },
-        StringLiteral(path) {
+        StringLiteral(path) { // string
           const { node } = path;
           const { value } = node;
           if (judgeChinese(value)) {
@@ -123,35 +138,43 @@ function reactPlugin (allTranslateWord, randomStr, arg) {
             path.skip();
           }
         },
-        TemplateLiteral(path) {
-          if(!path.node.quasis.every(word => !judgeChinese(word))) {
+        TemplateLiteral(path) { // 模板字符串
+          if(!path.node.quasis.every(word => !judgeChinese(word))) { // 跳过都不是中文的情况
             path.skip();
             return
           }
+          // 如果检测到中文， 将 模板字符串 按start顺序 重新拼接，
+          // `我要${name}测试`  path.node.quasis -》 [{我要}, {测试}]  path.node.expressions -> [{${name}}]
           const tempArr = [].concat(path.node.quasis, path.node.expressions).sort(function(a,b){
             return a.start - b.start;
           })
           let isreplace = false;
+          // 最终转换出来的string
           let v = '';
           const variable = {}
           tempArr.forEach(function(t) {
-            if(t.type === 'TemplateElement') {
+            if(t.type === 'TemplateElement') { // `我要${name}测试` 里中的TemplateElement 类型是 [{我要,。...},{测试,...}]
               v += `${replaceLineBreak(t.value.cooked)}`;
               if(judgeChinese(t.value.cooked)) {
                 isreplace = true;
               }
-            } else if(t.type === 'Identifier') {
+            } else if(t.type === 'Identifier') { // `我要${name}测试` 里中的Identifier 类型是 ${name}
               variable[t.name] = t.name;
               v += `{${t.name}}`
             } else if(t.type === 'CallExpression') {
               // TODO
+              /**
+                var aa = () => "dwww"
+                var test = (name) => `我要${name}测试${aa()}`
+                ${aa()} 是 CallExpression，未处理
+               */
               isreplace = false;
             } else {
               // ...TODO
               isreplace = false;
             }
           })
-          if(!isreplace) {
+          if(!isreplace) { // 如果没有替换 则跳过该文件
             path.skip();
             return
           }

@@ -12,35 +12,44 @@ module.exports = function (option) {
     _randomStr: () => Math.random().toString(36).substr(2),
 
     _existsSync: (path) => fs.existsSync(path),
-
+  // 得到需要翻译的路径
     _getTranslateFiles: function () {
       return file.getFiles({
         path: this.option.entry,
         exclude: this.option.exclude,
       })
     },
-
+  // 通过output的路径 得到翻译过的文字
     getExistWords: function(existWordsPath) {
       let defaultWords = {}
       let requireWords = {};
       try {
         requireWords = require(`${process.cwd()}/${existWordsPath}`);
+        // 将key 和value 倒置 =》 {[value]: key}
         defaultWords = util.invert(requireWords)
       } catch(e) {
         // chalk.error(`${output}/zh_CN.js is not a module`)
       }
+      // 同一条数据 返回2种形式的 1. key->val 2. val -> key
       return {
         valueKey: defaultWords,
         keyValue: requireWords
       };
     },
 
+    /**
+     * 
+     * @param {*} allTranslateWords 读取已经翻译过的文件 把 key-val 倒序 即 {中文val： 英文key}
+     * @param {*} filePath 每个需要翻译文件的路径 
+     */
     collect: function(allTranslateWords, filePath) {
+      // 得到要写入的code 字符串
       const { isRewriting, code } = translate({
         filePath,
         allTranslateWords,
         randomStr: this.option.randomFuc || this._randomStr
       })
+      // 有新翻译的文案，则重新写入文件
       if(isRewriting) {
         this.write(`${filePath}`, code, { encoding: "utf-8" })
         chalk.success(`${filePath} is success`)
@@ -84,7 +93,7 @@ module.exports = function (option) {
       if(!this._existsSync(this.option.output)) {
         mkdirp(this.option.output)
       }
-
+      // 如果存在之前翻译过的主翻译文件 将key-val 颠倒， 则拿出来放到allTranslateWords ： {val ->key}
       if(this._existsSync(outputMainLocalPath(this.option.mainLocal))) {
         Object.assign(allTranslateWords, this.getExistWords(outputMainLocalPath(this.option.mainLocal)).valueKey);
       }

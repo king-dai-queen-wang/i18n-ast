@@ -7,12 +7,13 @@ const parser = require('@babel/parser');
 const middleRandomStr = (function(randomStr, ...argu) {
   return () => randomStr(...argu)
 })
-
+// randomStr 是config文件传进来的方法
 function translate ({filePath, option, allTranslateWords, randomStr}) {
   const arg = {
     translateWordsNum: 0,
     hasImportModule: false,
   }
+  // 这里引入i18n-jsx 然后执行，柯力话 返回plugin，（并且保存3个传参）
   const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords, middleRandomStr(randomStr, filePath), arg);
 
   const transformOptions = {
@@ -46,10 +47,12 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
   }
   const bableObj = babel.transformFileSync(filePath, option || transformOptions)
   let { code, ast } = bableObj;
+  // 通过plugin （判断文件头上是否引入过import intl from 'react-intl-universal';）设置arg.hasImportModule 属性
   const { translateWordsNum, hasImportModule } = arg;
-
+// 有新翻译的 计数>0  的话
   if(translateWordsNum !== 0) {
     code = generator.default(ast).code
+    // 如果没有导入过则拼接 导入code
     if(!hasImportModule) {
       code = 'import intl from \'react-intl-universal\';\n' + code;
     }
