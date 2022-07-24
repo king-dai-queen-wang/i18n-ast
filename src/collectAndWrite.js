@@ -55,7 +55,7 @@ module.exports = function (option) {
         chalk.success(`${filePath} is success`)
       }
     },
-
+    // 生成要写文件的 code str内容
     reorganize: function(allTranslateWords) {
       let outputString = 'module.exports = {\n';
       const wordList = {};

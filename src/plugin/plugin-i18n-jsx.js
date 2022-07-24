@@ -71,6 +71,9 @@ function reactPlugin (allTranslateWord, randomStr, arg) {
   }
   // 最终返回的是plugin
   const plugin = function ({ types: t }) {
+    // return {
+    //   visitor:{}
+    // }
     return {
       visitor: {
         // 只处理import节点
@@ -80,7 +83,7 @@ function reactPlugin (allTranslateWord, randomStr, arg) {
           if (node.source.value === 'react-intl-universal') {
             arg.hasImportModule = true;
           }
-          path.skip();
+          path.skip(); // 当前这条路径节点跳过
         },
         JSXText(path) {
           const { node } = path;

@@ -29,10 +29,11 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
     plugins: [
       "@babel/plugin-syntax-jsx", 
       ["@babel/plugin-syntax-typescript", {isTSX: true}],
-      "@babel/plugin-syntax-class-properties",
+      
       "@babel/plugin-syntax-object-rest-spread",
       // // ['@babel/plugin-proposal-decorators', {version: "2021-12",decoratorsBeforeExport: false}],
-      ["@babel/plugin-syntax-decorators",{version: "2021-12", decoratorsBeforeExport: true}], 
+      ["@babel/plugin-syntax-decorators", { "legacy": true }],
+      "@babel/plugin-syntax-class-properties",
       "@babel/plugin-syntax-async-generators",
       "@babel/plugin-syntax-do-expressions",
       "@babel/plugin-syntax-optional-chaining",
