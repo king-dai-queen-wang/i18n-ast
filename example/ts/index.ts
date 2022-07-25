@@ -1,8 +1,10 @@
-const aa = "对对对";
-const bb = "普通";
+import intl from 'react-intl-universal';
+const aa = intl.get("ButtonBasics.jsx-j5ry145po7q").d('代维维');
+const bb = intl.get("index.ts-wykn5mz2d9").d('腭侧');
 
-export const getAa = (): string => {
-  return `${aa} ${bb}`;
-}
+const getAa = constructor => {
+  constructor.xx = 1;
+};
 
-console.log(getAa());
+@getAa
+export default class Test {}

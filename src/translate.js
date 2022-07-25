@@ -32,7 +32,7 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
       
       "@babel/plugin-syntax-object-rest-spread",
       // // ['@babel/plugin-proposal-decorators', {version: "2021-12",decoratorsBeforeExport: false}],
-      ["@babel/plugin-syntax-decorators", { "legacy": true }],
+      ["@babel/plugin-syntax-decorators", {version: "2021-12",decoratorsBeforeExport: true}],
       "@babel/plugin-syntax-class-properties",
       "@babel/plugin-syntax-async-generators",
       "@babel/plugin-syntax-do-expressions",
@@ -52,7 +52,10 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
   const { translateWordsNum, hasImportModule } = arg;
 // 有新翻译的 计数>0  的话
   if(translateWordsNum !== 0) {
-    code = generator.default(ast).code
+    code = generator.default(ast, {
+      decoratorsBeforeExport: true, // 生成code的时候 配置项，允许 装饰器在export 前面
+      
+    }).code
     // 如果没有导入过则拼接 导入code
     if(!hasImportModule) {
       code = 'import intl from \'react-intl-universal\';\n' + code;

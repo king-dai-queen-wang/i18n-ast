@@ -1,5 +1,6 @@
 module.exports = {
-  entry: "./example", 
+  // entry: "./example", 
+  entry: "./example/tsx/", 
   //entry: "/Users/david/Desktop/projects/atta-app/src",
   output: "./u",
   exclude: [
