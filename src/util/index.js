@@ -1,5 +1,5 @@
 const chalk = require('./chalk');
-
+// 将 key-val 反转
 const invert = function(obj) {
   var result = {};
   var keys = Object.keys(obj);
