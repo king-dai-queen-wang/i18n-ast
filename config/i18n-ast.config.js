@@ -1,8 +1,11 @@
 module.exports = {
   // entry: "./example", 
-  entry: "./example/tsx/", 
-  //entry: "/Users/david/Desktop/projects/atta-app/src",
-  output: "./u",
+  // entry: "./example/tsx/", 
+  entry: [
+    "/Users/david/Desktop/projects/atta-app/src/navigations/Register/",
+    "/Users/david/Desktop/projects/atta-app/src/navigations/User/"
+  ],
+  output: "/Users/david/Desktop/projects/atta-app/src/locales",
   exclude: [
     "**/node_modules/**/*",
    "my-app/src/components/MultiLanguage.jsx",
