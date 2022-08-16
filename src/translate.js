@@ -13,7 +13,7 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
     translateWordsNum: 0,
     hasImportModule: false,
   }
-  // 这里引入i18n-jsx 然后执行，柯力话 返回plugin，（并且保存3个传参）
+  // 这里引入i18n-jsx 然后执行，柯里化 返回plugin，（并且保存3个传参）
   const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords, middleRandomStr(randomStr, filePath), arg);
 
   const transformOptions = {
@@ -31,7 +31,6 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
       ["@babel/plugin-syntax-typescript", {isTSX: true}],
       
       "@babel/plugin-syntax-object-rest-spread",
-      // // ['@babel/plugin-proposal-decorators', {version: "2021-12",decoratorsBeforeExport: false}],
       ["@babel/plugin-syntax-decorators", {version: "2021-12",decoratorsBeforeExport: true}],
       "@babel/plugin-syntax-class-properties",
       "@babel/plugin-syntax-async-generators",
@@ -64,7 +63,21 @@ function translate ({filePath, option, allTranslateWords, randomStr}) {
 
   return {
     isRewriting: translateWordsNum !== 0,
-    code: code //prettier.format(code, { parser: "babylon", singleQuote: true })
+    code:  code
+    // prettier.format(code, { 
+    //     parser: 'babel-ts',
+    //     printWidth: 120,
+    //     semi: false,
+    //     singleQuote: true,
+    //     trailingComma: 'all',
+    //     bracketSpacing: true, // 对象空格
+    //     jsxBracketSameLine: true,
+    //     arrowParens: 'avoid',
+    //     tabWidth: 2,
+    //     useTabs: true,
+    //     quoteProps: 'as-needed',
+    //     jsxSingleQuote: true
+    //  })
   };
 }
 
