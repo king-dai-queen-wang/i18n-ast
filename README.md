@@ -23,11 +23,9 @@ yarn add i18n-ast --dev
 1. 利用命令行
 - 执行翻译命令
 ```sh
-  i18n-ast -e [path] -o [path] -x [path] -l [localeNames]
-```
-- 执行打包成 excel 命令
-```sh
-i18n-ast -o [path] -p
+  i18n-ast -s 编译+写文件
+  i18n-ast -p 将翻译文件 转excel
+  i18n-ast -u 将最新的excel 反编译成 翻译文件
 ```
 
 2. 在根目录下新建配置文件 i18n-ast.config.js
@@ -56,9 +54,9 @@ module.exports = () => ({
   - vue（待补充）
 - [ ] excel
   - [x] 翻译词条文件转换为 excel
-  - [ ] excel 转换为翻译文件
+  - [x] excel 转换为翻译文件
 - [ ] 需替换情况收集
 - [ ] 判断是否引入模块，没有则自动引入
 - [ ] 替换方法可自定义
-- [ ] 引入自动翻译，翻译简单词条（atool-i10n）
-- [x] 替换后文件格式化（babel-generator还原的代码格式有很大的问题，由此引入 prettier 对生成的代码进行格式化）
+- [x] 引入自动翻译，翻译简单词条（baidu翻译）
+- [ ] 替换后文件格式化（babel-generator还原的代码格式有很大的问题，由此引入 prettier 对生成的代码进行格式化）

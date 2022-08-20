@@ -8,16 +8,18 @@ const package = require(`${cwdPath}/package.json`);
 
 program.version(package.version)
 // 只有命令行可配置的
-program.option('-c, --config [path]', '配置文件地址（默认地址为根目录下 i18n-ast.config.js）')
-
+// program.option('-c, --config [path]', '配置文件地址（默认地址为根目录下 i18n-ast.config.js）')
+program.option('-s, --scan', '根据i18n-ast.config.js 进行扫描并且写入翻译文件')
 // 只有配置文件都可配置的
 
 // 命令行及配置文件都可配置的
-program.option('-e, --entry [path]', '提取翻译词条的目录')
-program.option('-o, --output [path]', '翻译词条导出的目录')
-program.option('-p, --pack', '将翻译文件整理为 excel，需要配置"output"参数')
-program.option('-x, --exclude [path]', '工作目录下需要排除的文件（多个文件请用","分割）')
-program.option('-l, --locales [localeNames]', '需要翻译的语种的名字，请将中文文件名放在第一个，如有多个请用","分割，例如 "zh_CN,pt_PT,en_US"')
+// program.option('-e, --entry [path]', '提取翻译词条的目录')
+// program.option('-o, --output [path]', '翻译词条导出的目录')
+program.option('-p, --packExcel', '将翻译文件整理为 excel，需要配置"output"参数')
+
+program.option('-u, --unpackExcel', '将 excel 转换成翻译文件，需要配置"output"参数')
+// program.option('-x, --exclude [path]', '工作目录下需要排除的文件（多个文件请用","分割）')
+// program.option('-l, --locales [localeNames]', '需要翻译的语种的名字，请将中文文件名放在第一个，如有多个请用","分割，例如 "zh_CN,pt_PT,en_US"')
 
 module.exports = function parseArgv(args) {
   program.parse(args);

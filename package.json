@@ -1,18 +1,18 @@
 {
-  "name": "i18n-ast",
-  "version": "0.2.9",
+  "name": "xt-i18n",
+  "version": "0.0.1",
   "description": "",
   "main": "bin/index.js",
   "scripts": {
-    "start": "node bin/index.js -l zh_CN,pt_PT,en_US",
-    "start-c": "node bin/index.js -c config/i18n-ast.config.js",
+    "start": "node bin/index.js -u",
+    "start-c": "node bin/index.js -s",
     "test-program": "node bin/index.js -e t -o u -x *-*.jsx -l a,b,c -p",
     "ready": "chmod 777 ./back.sh && ./back.sh",
     "test": "jest --color"
   },
   "author": {
-    "name": "ssstone",
-    "email": "386159234@qq.com"
+    "name": "david",
+    "email": "1006889428@qq.com"
   },
   "keywords": [
     "in18",
@@ -54,13 +54,17 @@
     "react-intl-universal": "^2.5.3",
     "shortid": "^2.2.16",
     "xlsx": "^0.14.0"
-  },
+    },
   "devDependencies": {
-    "babel-core": "^7.0.0-bridge.0",
+    
     "babel-jest": "^23.4.2",
     "jest": "^23.6.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:king-dai-queen-wang/i18n-ast.git"
+  },
   "bin": {
-    "i18n-ast": "./bin/index.js"
+    "xt-i18n": "./bin/index.js"
   }
 }

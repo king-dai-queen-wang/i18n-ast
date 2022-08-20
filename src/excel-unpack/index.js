@@ -76,12 +76,16 @@ module.exports = function (option) {
               
 
         const data  = this.readXlsFiles()
+        if(data.length === 0) {
+          throw new  Error("Parsed data from excel must have at least one sheet");
+        }
+        const {keys, ...locales} = data[0];
 
-        const fileNames = Object.keys(data[0]).slice(1, data.length - 1);
+        const fileNames = Object.keys(locales);
 
         fileNames.forEach((fileName) => {
             this.output[fileName] = {}
-        })
+        });
         this.transToOutputObj(data)
 
         this.writeResFiles(fileNames)
