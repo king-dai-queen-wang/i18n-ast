@@ -8,23 +8,26 @@ console.log('option', option)
 
 // 先收集再打包
 const queue = [
-  {
-    type: 'collectAndWrite',
-    params: ['entry', 'output'],
-    do: () => collectAndWrite(option).start()
-  }, 
-  {
-    type: 'excelPack',
-    params: ['pack'],
-    do: () => excelPack(option).start()
-  },
+  // {
+  //   type: 'collectAndWrite',
+  //   params: ['entry', 'output'],
+  //   do: async () => await collectAndWrite(option).start()
+  // }, 
+  // {
+  //   type: 'excelPack',
+  //   params: ['pack'],
+  //   do: async () => await excelPack(option).start()
+  // },
   {
     type: 'excelUnPack',
     params: ['unpack'],
     do: () => excelUnpack(option).start()
-  }]
+  }
+];
 
-queue.forEach(everLine => {
-  const isDoIt = everLine.params.every(param => option[param]);
-  if(isDoIt) everLine.do();
-})
+(async () => {
+  for(let i = 0; i< queue.length; i++) {
+    const isDoIt = queue[i].params.every(param => option[param]);
+    if(isDoIt) await queue[i].do();
+  }
+})()

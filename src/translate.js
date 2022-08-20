@@ -4,17 +4,14 @@ const babel = require("@babel/core");
 const generator = require('@babel/generator')
 const parser = require('@babel/parser');
 
-const middleRandomStr = (function(randomStr, ...argu) {
-  return () => randomStr(...argu)
-})
 // randomStr 是config文件传进来的方法
-function translate ({filePath, option, allTranslateWords, randomStr}) {
+function translate ({filePath, option, allTranslateWords,additionalTranslateWords, randomStr}) {
   const arg = {
     translateWordsNum: 0,
     hasImportModule: false,
   }
   // 这里引入i18n-jsx 然后执行，柯里化 返回plugin，（并且保存3个传参）
-  const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords, middleRandomStr(randomStr, filePath), arg);
+  const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords,additionalTranslateWords, randomStr, arg);
 
   const transformOptions = {
     sourceType: "module",

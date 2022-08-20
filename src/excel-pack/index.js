@@ -13,7 +13,9 @@ module.exports = function (option) {
     getExistWords: function(existWordsPath) {
       let requireWords = {};
       try {
-        requireWords = require(`${process.cwd()}/${existWordsPath}`);
+        const path = `${process.cwd()}/${existWordsPath}`
+        delete require.cache[require.resolve(path)]; 
+        requireWords = require(path);
       } catch(e) {
         // console.log(e)
         // chalk.error(`${output}/zh_CN.js is not a module`)
@@ -21,7 +23,7 @@ module.exports = function (option) {
       return requireWords;
     },
 
-    start: function() {
+    start: async function() {
       let allKeys = [];
       const sheet = {};
       const everLanguageWords = {};

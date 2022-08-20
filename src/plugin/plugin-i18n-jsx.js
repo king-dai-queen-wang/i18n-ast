@@ -23,17 +23,21 @@ const judgeChinese = function(text) {
 }
  * @returns  翻译文件的value （可能带变量）
  */
-function reactPlugin (allTranslateWord, randomStr, arg) {
+function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg) {
   // variableObj 翻译的字符串里有变量的情况
   function makeReplace({value, variableObj}) {
     arg.translateWordsNum++; // 
-    let key = randomStr();
-    const val = value;
-    if(allTranslateWord[val]) { // 如果已经翻译过 直接拿出来key
-      key = allTranslateWord[val];
-    } else {
-      allTranslateWord[val] = key // 如果没有翻译过， 生成新的key 
-    }
+    let key = randomStr(value);
+    // allTranslateWord[key] = value
+
+    console.log("replace", key, value)
+    additionalTranslateWords[key] = value
+    // const val = value;
+    // if(allTranslateWord[val]) { // 如果已经翻译过 直接拿出来key
+    //   key = allTranslateWord[val];
+    // } else {
+    //   allTranslateWord[val] = key // 如果没有翻译过， 生成新的key 
+    // }
     
     // 用于防止中文转码为 unicode
     const v = Object.assign(t.StringLiteral(value), {

@@ -10,6 +10,7 @@ const invert = function(obj) {
   return result;
 };
 
+
 module.exports = {
   invert
 }
