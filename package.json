@@ -5,7 +5,7 @@
   "main": "bin/index.js",
   "scripts": {
     "start": "node bin/index.js -u",
-    "start-c": "node bin/index.js -s",
+    "start-c": "node bin/index.js -s && node bin/index.js -p",
     "test-program": "node bin/index.js -e t -o u -x *-*.jsx -l a,b,c -p",
     "ready": "chmod 777 ./back.sh && ./back.sh",
     "test": "jest --color"

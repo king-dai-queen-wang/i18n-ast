@@ -96,11 +96,23 @@ module.exports = function (option) {
       if (translateConfig?.name === "BaiduTranslate") {
         console.log("------翻译", additionalTranslateWords, localName);
         const targetLang = translateConfig?.i18nMapping?.[localName];
+
+        var q='';
+        var old = []; // 指的是原来结构中的key，都存到一个数组
+        for(var attr in additionalTranslateWords) {
+          old.push(attr)
+          q=q+additionalTranslateWords[attr]+"\n" //把value拼成一个q
+        }
+        const translatedWords = {}
         await bdt
-          .translate(JSON.stringify(additionalTranslateWords), targetLang, "zh")
+          .translate(q, targetLang, "zh")
           .then(async function (res) {
             console.log(res);
-            await callback(translateConfig?.translateCallback(res));
+            old.forEach((key, index) => {
+              translatedWords[key] = res?.trans_result?.[index]?.dst
+            })
+            console.log(translatedWords);
+            await callback(translatedWords);
           })
           .catch(async function (err) {
             console.log(err, "----translate error");
@@ -172,9 +184,10 @@ module.exports = function (option) {
         const buffer = this.option.otherLocales.map(
           (localName) =>
             new Promise(async (resolve, reject) => {
-              // 得到要输出文件的 路径
+              setTimeout(async () => {
+                // 得到要输出文件的 路径
               const path = outputMainLocalPath(localName);
-
+              
               // 处理其他的翻译文件，增量判断 要翻译的，回调函数把最后的数据 写文件
               await this.execOtherLocales(
                 additionalTranslateWords,
@@ -210,6 +223,8 @@ module.exports = function (option) {
                   resolve("done");
                 }
               );
+              }, 2000)
+              
             })
         );
         await Promise.all(buffer);

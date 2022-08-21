@@ -15,8 +15,18 @@ module.exports = {
 
 // const bdt = new BaiduTranslate('20220816001309546', '6qjHdX4wDxW06Q_efK6q')
 
-// bdt.translate(`{ '49OQPOS0ip_ceshi': '测试', 'Msd1Jfi8F_ceshi': '测试', 'PyfjXc632e_woyaonameceshi': '我要{name}测试','VtC02wko7_haha': '哈哈',}`,
-//  'pt', 'zh').then(function(res) {
+// const jsonObj = {"lt89fgu5ah":"测试","c70icaalb6b":"测试","04la9rxuz9n7":"我要{name}测试"}
+// // var jsonObj = JSON.parse(transformOrigin);
+
+// var q='';
+// var old = []; // 指的是原来结构中的key，都存到一个数组
+// for(var attr in jsonObj) {
+//     old.push(attr)
+//     q=q+jsonObj[attr]+"\n" //把value拼成一个q
+// }
+
+// bdt.translate(q,
+//  'jp', 'zh').then(function(res) {
 //   console.log(res)
 // }).catch(function(err){ console.log(err); })
 

@@ -7,7 +7,7 @@
 
 module.exports = {
   entry: "./example/js/", 
-  // entry: "/Users/david/Desktop/projects/mfe-user-fund/shared/Dashboard/DashboardHome", // ! PC
+  // entry: "/Users/david/Desktop/projects/mfe-user-fund/shared/containers/App/Dashboard/DashboardHome", // ! PC
   // !APP:
   // entry: [
   //   "/Users/david/Desktop/projects/atta-app/src/navigations/Register/",
@@ -24,11 +24,11 @@ module.exports = {
   //  "jsx/ButtonBasics.jsx"
   ],
   randomFuc: (filePath) => `${Math.random().toString(36).substr(2)}`,
-  locales: 'zh_CN,en_US',
+  locales: 'zh_CN,en_US,cht_HK,spa_SPA',
 
   unpack: {
-    output: "./m",
-    entry: "/Users/david/Desktop/test_i18n_project/i18n-ast/u/collect.xlsx",
+    output: "./u",
+    entry: "./u/collect.xlsx",
   },
   autoTranslate: {
     enable: true,
@@ -37,8 +37,9 @@ module.exports = {
     secretKey: "6qjHdX4wDxW06Q_efK6q",
     i18nMapping: {
       'zh_CN': 'zh',
-      // 'pt_PT': 'pt',
+      'cht_HK': 'cht',
       'en_US': 'en',
+      'spa_SPA': 'spa',
     },
     translateCallback: function(transRes) {
       return JSON.parse(transRes?.trans_result?.[0]?.dst);
