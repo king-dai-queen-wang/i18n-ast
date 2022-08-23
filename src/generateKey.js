@@ -2,9 +2,9 @@ const shortid = require('shortid');
 const {pinyin} = require('pinyin-pro');
 // use $ and @ instead of - and _
 // shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
-// console.log(pinyin("你好的 的嗯嗯饿ww的我呃呃呃", { toneType: 'none', type: 'string' }).replace(/\W/g, '').substring(0, 16))
+// _${pinyin(text, { toneType: 'none', type: 'string' }).replace(/\W/g, '').substring(0, 16)}
 const shortId = function(text) {
-    return `${Math.random().toString(36).substr(2)}${pinyin(text, { toneType: 'none', type: 'string' }).replace(/\W/g, '').substring(0, 16)}`
+    return `${shortid.generate()}`
 }
 
 module.exports = {

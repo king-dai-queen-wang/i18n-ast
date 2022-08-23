@@ -27,7 +27,7 @@ module.exports = function (option) {
       let allKeys = [];
       const sheet = {};
       const everLanguageWords = {};
-      const filesPath = file.getALayerFiles({ path: this.option.output });
+      const filesPath = file.getALayerFiles({ path: this.option.output, exclude: 'index.js' });
 
       filesPath.forEach(filePath => {
         const fileName = filePath.split('/').pop();
@@ -66,7 +66,7 @@ module.exports = function (option) {
         }
       }
 
-      xlsx.writeFile(workbook, `${this.option.output}/collect.xlsx`);
+      xlsx.writeFile(workbook, `${this.option.output}/${this.option.excelName || 'collect.xlsx'}`);
     }
   }
   return excelPack

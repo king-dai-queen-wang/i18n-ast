@@ -1,10 +1,3 @@
-// module.exports = {
-//   entry: "t",
-//   output: "u",
-//   exclude: ['*-*.jsx'],
-//   randomFuc: (filePath) => `${filePath.split('/').pop()}-${Math.random().toString(36).substr(2)}`,
-// }
-
 module.exports = {
   entry: "./example/js/", 
   // entry: "/Users/david/Desktop/projects/mfe-user-fund/shared/containers/App/Dashboard/DashboardHome", // ! PC
@@ -23,26 +16,21 @@ module.exports = {
   //  "my-app/src/components/MultiLanguage.jsx",
   //  "jsx/ButtonBasics.jsx"
   ],
-  randomFuc: (filePath) => `${Math.random().toString(36).substr(2)}`,
-  locales: 'zh_CN,en_US,cht_HK,spa_SPA',
-
+  // randomFuc: (filePath) => `${Math.random().toString(36).substr(2)}`,
+  locales: 'zh_CN,en_US,zh_HK',
+  excelName: 'collect.xlsx',
   unpack: {
-    output: "./u",
-    entry: "./u/collect.xlsx",
+    excelName: 'collect.xlsx',
+    entry: "./u", // 解析的excel 的入口， 不写默认是外面配置项的output
+    output: "./m", // 可选， 不写的话默认外面配置项的output,会覆盖原来的翻译文件
   },
   autoTranslate: {
     enable: true,
     name: "BaiduTranslate",
-    appId: "20220816001309546",
-    secretKey: "6qjHdX4wDxW06Q_efK6q",
     i18nMapping: {
       'zh_CN': 'zh',
-      'cht_HK': 'cht',
+      'zh_HK': 'cht',
       'en_US': 'en',
-      'spa_SPA': 'spa',
     },
-    translateCallback: function(transRes) {
-      return JSON.parse(transRes?.trans_result?.[0]?.dst);
-    }
   }
 }

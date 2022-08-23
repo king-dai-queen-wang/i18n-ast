@@ -11,7 +11,10 @@ module.exports = function (option) {
     option: option,
     output: {},  
     readXlsFiles: function(){
-      const xlsPath = option.unpack.entry;
+      const xlsPath = path.resolve(path.join(
+        (option?.unpack?.entry || option?.output),
+        ( option?.unpack?.excelName || option?.excelName))
+      );
       const workbook = xlsx.readFile(xlsPath)
 
       let sheetNames = workbook.SheetNames; //获取表明
@@ -60,7 +63,7 @@ module.exports = function (option) {
   },
 
  writeResFiles: function(fileNames) {
-      const outputDirPath = path.join(process.cwd(), option.unpack.output)
+      const outputDirPath = path.join(process.cwd(), option.unpack.output || option.output)
       if(!fs.existsSync(outputDirPath)) {
           mkdirp(outputDirPath)
         }

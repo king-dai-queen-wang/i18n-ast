@@ -16,11 +16,9 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
   const transformOptions = {
     sourceType: "module",
     // code: false,
+    babelrc: false,
     ast: true,
     presets:[
-      // "@babel/preset-flow",
-      // "@babel/preset-env",
-      // "@babel/preset-react",
       
     ],
     plugins: [
