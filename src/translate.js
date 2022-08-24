@@ -17,10 +17,10 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
     sourceType: "module",
     // code: false,
     babelrc: false,
+    babelrcRoots: false,
+    configFile:false,
     ast: true,
-    presets:[
-      
-    ],
+    presets:[],
     plugins: [
       "@babel/plugin-syntax-jsx", 
       ["@babel/plugin-syntax-typescript", {isTSX: true}],

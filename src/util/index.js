@@ -10,7 +10,11 @@ const invert = function(obj) {
   return result;
 };
 
+const pickupChinese = function(text = '', length = 4) {
+  return [...text]?.filter((i) => /[\u4e00-\u9fa5]/.test(i)).slice(0, length).join('') || '';
+}
 
 module.exports = {
-  invert
+  invert,
+  pickupChinese
 }

@@ -82,118 +82,143 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg)
       visitor: {
         // 只处理import节点
         ImportDeclaration(path) {
-          const { node } = path;
-          // 判断该文件有 是否导入过react-intl-universal ，则把 arg.hasImportModule标记true
-          if (node.source.value === 'react-intl-universal') {
-            arg.hasImportModule = true;
+          try{
+            const { node } = path;
+            // 判断该文件有 是否导入过react-intl-universal ，则把 arg.hasImportModule标记true
+            if (node.source.value === 'react-intl-universal') {
+              arg.hasImportModule = true;
+            }
+            path.skip(); // 当前这条路径节点跳过
+          } catch(e){
+            console.error('ImportDeclaration', e)
           }
-          path.skip(); // 当前这条路径节点跳过
+          
         },
         JSXText(path) {
-          const { node } = path;
-          if (judgeChinese(node.value)) {
-            path.replaceWith(
-              t.JSXExpressionContainer(makeReplace({
-                value: node.value.trim().replace(/\n\s+/g, "\n")
-              }))
-            );
+          try{
+            const { node } = path;
+            if (judgeChinese(node.value)) {
+              path.replaceWith(
+                t.JSXExpressionContainer(makeReplace({
+                  value: node.value.trim().replace(/\n\s+/g, "\n")
+                }))
+              );
+            }
+            path.skip();
+          } catch(e) {
+            console.error('JSXText', e)
           }
-          path.skip();
+          
         },
         // 匹配函数执行的node
         CallExpression(path) {
-          if (path.node.callee.type === "MemberExpression") {
-            try{
-              // 判断是intl.get(xxxx)方法的调用
-              if(path.node.callee.object.callee.object.name === 'intl' && path.node.callee.object.callee.property.name === 'get') {
-                // key = 拿到 intl.get(key).d(val) 格式 中的 key
-                const key = path.node.callee.object.arguments[0].value;
-                if(path.node.callee.property.name === "d") {
-                  //value = 拿到 intl.get(key).d(val) 格式 中的 val
-                  const value = path.node.arguments[0].value
-                  console.log(`"${key}": "${value}"`)
+          try{
+            if (path.node.callee.type === "MemberExpression") {
+              try{
+                // 判断是intl.get(xxxx)方法的调用
+                if(path.node.callee.object.callee.object.name === 'intl' && path.node.callee.object.callee.property.name === 'get') {
+                  // key = 拿到 intl.get(key).d(val) 格式 中的 key
+                  const key = path.node.callee.object.arguments[0].value;
+                  if(path.node.callee.property.name === "d") {
+                    //value = 拿到 intl.get(key).d(val) 格式 中的 val
+                    const value = path.node.arguments[0].value
+                    console.log(`"${key}": "${value}"`)
+                  }
                 }
+              } catch(e) {
+                // console.log(e)
               }
-            } catch(e) {
-              // console.log(e)
+              path.skip()
+              return;
             }
-            path.skip()
-            return;
+          }catch(e){
+            console.error('CallExpression', e)
           }
+          
         },
         StringLiteral(path) { // string
-          const { node } = path;
-          const { value } = node;
-          if (judgeChinese(value)) {
-            if (path.parent.type === 'JSXAttribute') {
-              path.replaceWith(t.JSXExpressionContainer(makeReplace({
-                value: value.trim()
-              })));
-            } else if(path.parent.type === 'ObjectProperty') {
-              path.replaceWith(makeReplace({
-                value: value.trim()
-              }));
-            } else if(path.parent.type === 'AssignmentExpression') {
-              path.replaceWith(makeReplace({
-                value: value.trim()
-              }));
-            } else {
-              path.replaceWith(makeReplace({
-                value: value.trim()
-              }));
+          try{
+            const { node } = path;
+            const { value } = node;
+            if (judgeChinese(value)) {
+              if (path.parent.type === 'JSXAttribute') {
+                path.replaceWith(t.JSXExpressionContainer(makeReplace({
+                  value: value.trim()
+                })));
+              } else if(path.parent.type === 'ObjectProperty') {
+                path.replaceWith(makeReplace({
+                  value: value.trim()
+                }));
+              } else if(path.parent.type === 'AssignmentExpression') {
+                path.replaceWith(makeReplace({
+                  value: value.trim()
+                }));
+              } else {
+                path.replaceWith(makeReplace({
+                  value: value.trim()
+                }));
+              }
+              path.skip();
             }
-            path.skip();
+          }catch(e) {
+            console.error('StringLiteral', e)
           }
+          
         },
         TemplateLiteral(path) { // 模板字符串
-          if(!path.node.quasis.every(word => !judgeChinese(word))) { // 跳过都不是中文的情况
-            path.skip();
-            return
-          }
-          // 如果检测到中文， 将 模板字符串 按start顺序 重新拼接，
-          // `我要${name}测试`  path.node.quasis -》 [{我要}, {测试}]  path.node.expressions -> [{${name}}]
-          const tempArr = [].concat(path.node.quasis, path.node.expressions).sort(function(a,b){
-            return a.start - b.start;
-          })
-          let isreplace = false;
-          // 最终转换出来的string
-          let v = '';
-          const variable = {}
-          tempArr.forEach(function(t) {
-            if(t.type === 'TemplateElement') { // `我要${name}测试` 里中的TemplateElement 类型是 [{我要,。...},{测试,...}]
-              v += `${replaceLineBreak(t.value.cooked)}`;
-              if(judgeChinese(t.value.cooked)) {
-                isreplace = true;
-              }
-            } else if(t.type === 'Identifier') { // `我要${name}测试` 里中的Identifier 类型是 ${name}
-              variable[t.name] = t.name;
-              v += `{${t.name}}`
-            } else if(t.type === 'CallExpression') {
-              // TODO
-              /**
-                var aa = () => "dwww"
-                var test = (name) => `我要${name}测试${aa()}`
-                ${aa()} 是 CallExpression，未处理
-               */
-              isreplace = false;
-            } else {
-              // ...TODO
-              isreplace = false;
+          try{
+            if(!path.node.quasis.every(word => !judgeChinese(word))) { // 跳过都不是中文的情况
+              path.skip();
+              return
             }
-          })
-          if(!isreplace) { // 如果没有替换 则跳过该文件
+            // 如果检测到中文， 将 模板字符串 按start顺序 重新拼接，
+            // `我要${name}测试`  path.node.quasis -》 [{我要}, {测试}]  path.node.expressions -> [{${name}}]
+            const tempArr = [].concat(path.node.quasis, path.node.expressions).sort(function(a,b){
+              return a.start - b.start;
+            })
+            let isreplace = false;
+            // 最终转换出来的string
+            let v = '';
+            const variable = {}
+            tempArr.forEach(function(t) {
+              if(t.type === 'TemplateElement') { // `我要${name}测试` 里中的TemplateElement 类型是 [{我要,。...},{测试,...}]
+                v += `${replaceLineBreak(t.value.cooked)}`;
+                if(judgeChinese(t.value.cooked)) {
+                  isreplace = true;
+                }
+              } else if(t.type === 'Identifier') { // `我要${name}测试` 里中的Identifier 类型是 ${name}
+                variable[t.name] = t.name;
+                v += `{${t.name}}`
+              } else if(t.type === 'CallExpression') {
+                // TODO
+                /**
+                  var aa = () => "dwww"
+                  var test = (name) => `我要${name}测试${aa()}`
+                  ${aa()} 是 CallExpression，未处理
+                 */
+                isreplace = false;
+              } else {
+                // ...TODO
+                isreplace = false;
+              }
+            })
+            if(!isreplace) { // 如果没有替换 则跳过该文件
+              path.skip();
+              return
+            }
+            if(v.trim() === '') {
+              path.skip();
+              return
+            }
+            path.replaceWith(makeReplace({
+              value: v,
+              variableObj: variable,
+            }));
             path.skip();
-            return
+          }catch(e) {
+            console.error('TemplateLiteral', e)
           }
-          if(v.trim() === '') {
-            path.skip();
-            return
-          }
-          path.replaceWith(makeReplace({
-            value: v,
-            variableObj: variable,
-          }));
-          path.skip();
+          
         },
       }
     };
