@@ -1,5 +1,6 @@
 module.exports = {
-  entry: "./example/js/", 
+  // entry: "./example/js",
+  entry: "./example/my-app/src/components", 
   // entry: "/Users/david/Desktop/projects/mfe-user-fund/shared/containers/App/Dashboard/DashboardHome", // ! PC
   // !APP:
   // entry: [
@@ -7,6 +8,7 @@ module.exports = {
   //   "/Users/david/Desktop/projects/atta-app/src/navigations/User/"
   // ],
   output: "./u",
+  // output: "./example/my-app/src/locales",
   exclude: [
     "**/node_modules/**/*",
     // ! pc 未解决下面3个报错

@@ -19,6 +19,7 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
     babelrc: false,
     babelrcRoots: false,
     configFile:false,
+    retainLines: true,
     ast: true,
     presets:[],
     plugins: [

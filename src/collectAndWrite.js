@@ -137,7 +137,8 @@ module.exports = function (option) {
 
       if (
         this.option.autoTranslate?.enable &&
-        Object.keys(additionalTranslateWords).length
+        Object.keys(additionalTranslateWords).length > 0 && 
+        Object.keys(additionalTranslateWords).length < (this.option.autoTranslate?.maxLimit || 100)
       ) {
         await this.autoTranslate(
           additionalTranslateWords,

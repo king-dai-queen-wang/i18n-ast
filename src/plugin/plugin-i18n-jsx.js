@@ -100,7 +100,7 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg)
             if (judgeChinese(node.value)) {
               path.replaceWith(
                 t.JSXExpressionContainer(makeReplace({
-                  value: node.value.trim().replace(/\n\s+/g, "\n")
+                  value: node.value.trim().replace(/[\n\r]/gi, "") // 临时办法把 换行符直接 替换 ‘’
                 }))
               );
             }

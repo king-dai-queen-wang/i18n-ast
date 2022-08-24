@@ -1,3 +1,4 @@
+// 输出彩色的log
 const chalk = require('chalk');
 const { isString, isArray } = require('./typeof.js');
 
