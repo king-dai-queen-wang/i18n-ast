@@ -151,24 +151,6 @@ module.exports = function (option) {
       }
     },
 
-    writeIndexFile:  function(option) {
-      let localeStr = `const ${option.mainLocal} =  require('./${option.mainLocal}.js');\n`;
-      option.otherLocales.forEach(localName => {
-        localeStr += (`const ${localName} =  require('./${localName}.js');\n`)
-      });
-      const exportStr = `
-export default {
-  ${option.mainLocal},
-  ${option.otherLocales.join(',\n  ')}
-}
-      `
-      const path  = `${option.output}/index.js`;
-      const content = `${localeStr}\n${exportStr}
-      `
-      
-       this.write(path, content, { encoding: "utf-8" });
-    },
-
     start: async function () {
       let allTranslateWords = {};
       let additionalTranslateWords = {};
@@ -258,7 +240,7 @@ export default {
         { encoding: "utf-8" }
       );
 // 写入index文件
-      this.writeIndexFile(option)
+      file.writeIndexFile(option.output, option)
     },
   };
   return collectAndWrite;

@@ -92,6 +92,9 @@ module.exports = function (option) {
         this.transToOutputObj(data)
 
         this.writeResFiles(fileNames)
+
+        // 写入index文件
+        file.writeIndexFile( option?.unpack?.output || option.output, option)
     }
   }
   return excelUnpack

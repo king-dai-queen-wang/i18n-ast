@@ -1,5 +1,5 @@
 const glob = require('glob');
-
+const fs = require('fs');
 module.exports = {
   // 收集所有文件
   getFiles({ path, exclude=[] }) {
@@ -15,5 +15,24 @@ module.exports = {
     return glob.sync(`${path}/*.js`, {
       ignore: (exclude || []).map(e => `${path}/${e}`)
     })
-  }
+  },
+
+  writeIndexFile:  function(output, option) {
+    let localeStr = `const ${option.mainLocal} =  require('./${option.mainLocal}.js');\n`;
+    option.otherLocales.forEach(localName => {
+      localeStr += (`const ${localName} =  require('./${localName}.js');\n`)
+    });
+    const exportStr = `
+export default {
+${option.mainLocal},
+${option.otherLocales.join(',\n  ')}
+}
+    `
+    const path  = `${output}/index.js`;
+    const content = `${localeStr}\n${exportStr}
+    `
+    
+    
+    fs.writeFileSync(path, content, { encoding: "utf-8" });
+  },
 }
