@@ -27,6 +27,7 @@ module.exports = function (option) {
       let allKeys = [];
       const sheet = {};
       const everLanguageWords = {};
+      // 将翻译文件收集起来
       const filesPath = file.getALayerFiles({ path: this.option.output, exclude: 'index.js' });
 
       filesPath.forEach(filePath => {
