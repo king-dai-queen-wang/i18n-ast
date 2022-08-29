@@ -48,17 +48,11 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg)
     })
     return t.CallExpression(
       t.MemberExpression(
-        t.CallExpression(
-          t.MemberExpression(
-            t.Identifier("intl"),
-            t.Identifier("get")
-          ),
-          setObjectExpression(variableObj) ? [t.StringLiteral(key), setObjectExpression(variableObj)] : [t.StringLiteral(key)]
-        ),
-        t.Identifier("d"),
+        t.Identifier("intl"),
+        t.Identifier("get")
       ),
-      [v]
-    );
+      setObjectExpression(variableObj) ? [t.StringLiteral(key), setObjectExpression(variableObj)] : [t.StringLiteral(key)]
+    )
   }
 
   function setObjectExpression(obj) {
@@ -119,11 +113,11 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg)
                 if(path.node.callee.object.callee.object.name === 'intl' && path.node.callee.object.callee.property.name === 'get') {
                   // key = 拿到 intl.get(key).d(val) 格式 中的 key
                   const key = path.node.callee.object.arguments[0].value;
-                  if(path.node.callee.property.name === "d") {
-                    //value = 拿到 intl.get(key).d(val) 格式 中的 val
-                    const value = path.node.arguments[0].value
-                    console.log(`"${key}": "${value}"`)
-                  }
+                  // if(path.node.callee.property.name === "d") {
+                  //   //value = 拿到 intl.get(key).d(val) 格式 中的 val
+                  //   const value = path.node.arguments[0].value
+                  //   console.log(`"${key}": "${value}"`)
+                  // }
                 }
               } catch(e) {
                 // console.log(e)

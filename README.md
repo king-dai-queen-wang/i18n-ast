@@ -1,52 +1,43 @@
-# i18n-ast
+# xt-i18n
 
 ## Install
 
 使用 npm:
 
 ```sh
-npm install --save-dev i18n-ast
+npm install --save-dev xt-i18n
 ```
 
 or using yarn:
 
 ```sh
-yarn add i18n-ast --dev
+yarn add xt-i18n --dev
 ```
 
 ## Use
-共有两种办法执行 i18n-ast
 
 需要转换的文件路径
 输出的文件路径是必填的
 
-1. 利用命令行
-- 执行翻译命令
-```sh
-  xt-i18n-ast --scan (简写-s)编译+写文件
-  xt-i18n-ast --packExcel (简写 -p)将翻译文件 转excel
-  xt-i18n-ast --unpackExcel (简写 -u)将最新的excel 反编译成 翻译文件
-```
-
-2. 在根目录下新建配置文件 i18n-ast.config.js
+1. 在根目录下新建配置文件 i18n-ast.config.js
 ```js
 module.exports = () => ({
-  entry: "需要转换的文件路径",
-  output: "输出的文件路径",
+  entry: "需要转换的文件路径", // 必填
+  output: "输出的文件路径", // 必填
    //排除的文件（类型是数组） 
-  exclude: [],
-  //可以自定义随机字符串，第一个参数是翻译的文字， 不写的话默认是 hash id
-  randomFuc: (text) => `${filePath.split('/').pop()}-${Math.random()}`,
-  locales: 'zh_CN,pt_PT,en_US',
+  exclude: [], // 必填
+  //可以自定义随机字符串，第一个参数是翻译的文字， 不写的话默认是 hashId_pingying
+  // randomFuc: (text) => `${filePath.split('/').pop()}-${Math.random()}`,
+  locales: 'zh_CN,pt_PT,en_US',// 必填
   // 输出和解析的excel 名称
-  excelName: 'collect.xlsx',
+  excelName: 'collect.xlsx',// 必填
   // 解析excel的配置项（可选）
-  unpack: {
-    excelName: 'collect.xlsx', // 如果这里指定了名字 则用这里的，否则用外面的excelName
-    entry: "./u", // 解析的excel 的入口， 不写默认是外面配置项的output
-    output: "./u", // 可选， 不写的话默认外面配置项的output,会覆盖原来的翻译文件
-  },
-  // 是否要开启自动翻译
+  // unpack: {
+  //   excelName: 'collect.xlsx', // 如果这里指定了名字 则用这里的，否则用外面的excelName
+  //   entry: "./u", // 解析的excel 的入口， 不写默认是外面配置项的output
+  //   output: "./u", // 可选， 不写的话默认外面配置项的output,会覆盖原来的翻译文件
+  // },
+  // 是否要开启自动翻译  // 必填
   autoTranslate: {
     enable: true,
     name: "BaiduTranslate",
@@ -59,6 +50,14 @@ module.exports = () => ({
 })
 ```
 
+2. 在package.json 中添加命令
+- 执行翻译命令
+```sh
+  xt-i18n --scan (简写-s)编译+写文件
+  xt-i18n --packExcel (简写 -p)将翻译文件 转excel
+  xt-i18n --unpackExcel (简写 -u)将最新的excel 反编译成 翻译文件
+```
+
 ## Todo List
 - [ ] 替换情况
   - js
@@ -68,7 +67,6 @@ module.exports = () => ({
   - react
     - [x] react中的中文属性
     - [x] react中的中文内容
-  - vue（待补充）
 - [ ] excel
   - [x] 翻译词条文件转换为 excel
   - [x] excel 转换为翻译文件
