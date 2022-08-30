@@ -26,27 +26,31 @@ module.exports = () => ({
   output: "输出的文件路径", // 必填
    //排除的文件（类型是数组） 
   exclude: [], // 必填
-  //可以自定义随机字符串，第一个参数是翻译的文字， 不写的话默认是 hashId_pingying
-  // randomFuc: (text) => `${filePath.split('/').pop()}-${Math.random()}`,
+  
   locales: 'zh_CN,pt_PT,en_US',// 必填
   // 输出和解析的excel 名称
   excelName: 'collect.xlsx',// 必填
+  
+  // 是否要开启自动翻译  // 可选
+  // autoTranslate: {
+  //   enable: true,
+  //   name: "BaiduTranslate",
+  //   i18nMapping: {
+  //     'zh_CN': 'zh',
+  //     'zh_HK': 'cht',
+  //     'en_US': 'en',
+  //   },
+  // }
+
+  //可以自定义随机字符串，第一个参数是翻译的文字， 不写的话默认是 hashId_pingying
+  // randomFuc: (text) => `${filePath.split('/').pop()}-${Math.random()}`,
+  
   // 解析excel的配置项（可选）
   // unpack: {
   //   excelName: 'collect.xlsx', // 如果这里指定了名字 则用这里的，否则用外面的excelName
   //   entry: "./u", // 解析的excel 的入口， 不写默认是外面配置项的output
   //   output: "./u", // 可选， 不写的话默认外面配置项的output,会覆盖原来的翻译文件
   // },
-  // 是否要开启自动翻译  // 必填
-  autoTranslate: {
-    enable: true,
-    name: "BaiduTranslate",
-    i18nMapping: {
-      'zh_CN': 'zh',
-      'zh_HK': 'cht',
-      'en_US': 'en',
-    },
-  }
 })
 ```
 
@@ -67,7 +71,7 @@ module.exports = () => ({
   - react
     - [x] react中的中文属性
     - [x] react中的中文内容
-- [ ] excel
+- [x] excel
   - [x] 翻译词条文件转换为 excel
   - [x] excel 转换为翻译文件
 - [ ] 需替换情况收集
