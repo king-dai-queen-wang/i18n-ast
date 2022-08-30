@@ -63,7 +63,7 @@ module.exports = function (option) {
   },
 
  writeResFiles: function(fileNames) {
-      const outputDirPath = path.join(process.cwd(), option.unpack.output || option.output)
+      const outputDirPath = path.join(process.cwd(), option?.unpack?.output || option?.output || '')
       if(!fs.existsSync(outputDirPath)) {
           mkdirp(outputDirPath)
         }
