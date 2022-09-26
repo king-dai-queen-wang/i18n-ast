@@ -1,5 +1,8 @@
 module.exports = {
-  entry: ["./example/tsx/"], 
+  entry: [
+    "./example/jsx/"
+    // "/Users/david/Desktop/projects/mfe-user-fund/shared/"
+  ], 
   output: "./u",
   exclude: [
     "**/node_modules/**/*",

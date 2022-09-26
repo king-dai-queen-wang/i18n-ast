@@ -4,8 +4,9 @@ import { Alert, Button, StyleSheet, View } from 'react-native';
 export default class ButtonBasics extends Component {
   constructor(props) {
     this.state={
-      test1: "代维维",
-      test2: "代" + "薇" + '问问' + `的`
+      test1: "基础版永久免费；会员版998元/年，\n价格<相似产品5%！",
+      test2: "代" + "薇" + '问问' + `的`,
+      test3: '全球收款\n极速结汇\n安全风控'
     }
   }
   _onPressButton() {
