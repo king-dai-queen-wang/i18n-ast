@@ -3,6 +3,12 @@ import React from 'react';
 const xx = () => {
     const a2 = '全球收款\n极速结汇\n安全风控'
     const obj = { test: '基础版永久免费；会员版998元/年，\n价格<相似产品5%！' };
+    const shareData = {
+      title: '免7.5W结汇额度手续费，立即开启跨境收款！',
+      link: `${a2}://`,
+      desc: '全球收款 极速结汇 安全风控',
+      imgUrl: `${a2}/images/figure/thumbnail.png`,
+    }
     return <>
         <div className={styles.record}>{'©XTransfer. All rights reserved.\n沪ICP备17023308号'}</div>
 		<p>

@@ -94,7 +94,7 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg)
             if (judgeChinese(node.value)) {
               path.replaceWith(
                 t.JSXExpressionContainer(makeReplace({
-                  value: node.value.trim().replace(/[\n\r]/gi, "") // 临时办法把 换行符直接 替换 ‘’
+                  value: node.value.trim().replace(/[\n\r]/gi, "\\n") // 临时办法把 换行符直接 替换 ‘’
                 }))
               );
             }
@@ -137,19 +137,19 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg)
             if (judgeChinese(value)) {
               if (path.parent.type === 'JSXAttribute') {
                 path.replaceWith(t.JSXExpressionContainer(makeReplace({
-                  value: value.trim()
+                  value: value.trim().replace(/[\n\r]/gi, "\\n")
                 })));
               } else if(path.parent.type === 'ObjectProperty') {
                 path.replaceWith(makeReplace({
-                  value: value.trim()
+                  value: value.trim().replace(/[\n\r]/gi, "\\n")
                 }));
               } else if(path.parent.type === 'AssignmentExpression') {
                 path.replaceWith(makeReplace({
-                  value: value.trim()
+                  value: value.trim().replace(/[\n\r]/gi, "\\n")
                 }));
               } else {
                 path.replaceWith(makeReplace({
-                  value: value.trim()
+                  value: value.trim().replace(/[\n\r]/gi, "\\n")
                 }));
               }
               path.skip();
