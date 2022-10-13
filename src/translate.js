@@ -11,7 +11,7 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
     hasImportModule: false,
   }
   // 这里引入i18n-jsx 然后执行，柯里化 返回plugin，（并且保存3个传参）
-  const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords,additionalTranslateWords, randomStr, arg);
+  const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords,additionalTranslateWords, randomStr, filePath, arg);
 
   const transformOptions = {
     sourceType: "module",

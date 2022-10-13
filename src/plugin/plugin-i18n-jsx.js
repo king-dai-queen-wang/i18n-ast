@@ -23,11 +23,11 @@ const judgeChinese = function(text) {
 }
  * @returns  翻译文件的value （可能带变量）
  */
-function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr, arg) {
+function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr,filePath, arg) {
   // variableObj 翻译的字符串里有变量的情况
   function makeReplace({value, variableObj}) {
     arg.translateWordsNum++; // 
-    let key = randomStr(value);
+    let key = randomStr(filePath, value);
     // allTranslateWord[key] = value
 
     console.log("replace", key, value)

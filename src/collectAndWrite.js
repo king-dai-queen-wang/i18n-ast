@@ -6,9 +6,9 @@ const chalk = require("./util/chalk");
 const util = require("./util");
 const { shortId } = require("./generateKey");
 
-const BaiduTranslate = require("node-baidu-translate");
+// const BaiduTranslate = require("node-baidu-translate");
 const path = require("path");
-const bdt = new BaiduTranslate("20220816001309546", "6qjHdX4wDxW06Q_efK6q");
+// const bdt = new BaiduTranslate("20220816001309546", "6qjHdX4wDxW06Q_efK6q");
 module.exports = function (option) {
   const collectAndWrite = {
     option: option,
@@ -91,41 +91,41 @@ module.exports = function (option) {
       fs.writeFileSync(path, content, option);
     },
 
-    async autoTranslate(additionalTranslateWords, option, localName, callback) {
-      const translateConfig = option?.autoTranslate;
-      if (translateConfig?.name === "BaiduTranslate") {
-        console.log("------翻译", additionalTranslateWords, localName);
-        const targetLang = translateConfig?.i18nMapping?.[localName];
+    // async autoTranslate(additionalTranslateWords, option, localName, callback) {
+    //   const translateConfig = option?.autoTranslate;
+    //   if (translateConfig?.name === "BaiduTranslate") {
+    //     console.log("------翻译", additionalTranslateWords, localName);
+    //     const targetLang = translateConfig?.i18nMapping?.[localName];
 
-        var q='';
-        var old = []; // 指的是原来结构中的key，都存到一个数组
-        for(var attr in additionalTranslateWords) {
-          old.push(attr)
-          q=q+additionalTranslateWords[attr]+"\n" //把value拼成一个q
-        }
-        const translatedWords = {}
-        await bdt
-          .translate(q, targetLang, "zh")
-          .then(async function (res) {
-            console.log(res);
-            old.forEach((key, index) => {
-              translatedWords[key] = res?.trans_result?.[index]?.dst
-            })
-            console.log(translatedWords);
-            await callback(translatedWords);
-          })
-          .catch(async function (err) {
-            console.log(err, "----translate error");
-            await callback(null);
-          });
-        // const keys = Object.keys(allTranslateWords)
-        // await keys.forEach(async (key) => {
-        //   const val = await bdt.translate(allTranslateWords[key], 'en', 'zh').then(await option?.autoTranslate?.translateCallback)
-        //   allWords[key] = val;
-        // })
-        // return allWords;
-      }
-    },
+    //     var q='';
+    //     var old = []; // 指的是原来结构中的key，都存到一个数组
+    //     for(var attr in additionalTranslateWords) {
+    //       old.push(attr)
+    //       q=q+additionalTranslateWords[attr]+"\n" //把value拼成一个q
+    //     }
+    //     const translatedWords = {}
+    //     await bdt
+    //       .translate(q, targetLang, "zh")
+    //       .then(async function (res) {
+    //         console.log(res);
+    //         old.forEach((key, index) => {
+    //           translatedWords[key] = res?.trans_result?.[index]?.dst
+    //         })
+    //         console.log(translatedWords);
+    //         await callback(translatedWords);
+    //       })
+    //       .catch(async function (err) {
+    //         console.log(err, "----translate error");
+    //         await callback(null);
+    //       });
+    //     // const keys = Object.keys(allTranslateWords)
+    //     // await keys.forEach(async (key) => {
+    //     //   const val = await bdt.translate(allTranslateWords[key], 'en', 'zh').then(await option?.autoTranslate?.translateCallback)
+    //     //   allWords[key] = val;
+    //     // })
+    //     // return allWords;
+    //   }
+    // },
 
     execOtherLocales: async function (
       additionalTranslateWords,
@@ -134,21 +134,21 @@ module.exports = function (option) {
       callback
     ) {
       console.log(additionalTranslateWords, option);
-
-      if (
-        this.option.autoTranslate?.enable &&
-        Object.keys(additionalTranslateWords).length > 0 && 
-        Object.keys(additionalTranslateWords).length < (this.option.autoTranslate?.maxLimit || 100)
-      ) {
-        await this.autoTranslate(
-          additionalTranslateWords,
-          option,
-          localName,
-          callback
-        );
-      } else {
-        callback(null);
-      }
+      callback(null);
+      // if (
+      //   this.option.autoTranslate?.enable &&
+      //   Object.keys(additionalTranslateWords).length > 0 && 
+      //   Object.keys(additionalTranslateWords).length < (this.option.autoTranslate?.maxLimit || 100)
+      // ) {
+      //   await this.autoTranslate(
+      //     additionalTranslateWords,
+      //     option,
+      //     localName,
+      //     callback
+      //   );
+      // } else {
+      //   callback(null);
+      // }
     },
 
     start: async function () {

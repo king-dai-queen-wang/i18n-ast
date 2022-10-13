@@ -1,10 +1,13 @@
 const shortid = require('shortid');
 const {pinyin} = require('pinyin-pro');
-const {pickupChinese} = require('./util')
+const path = require('path');
+const {pickupChinese} = require('./util');
+const { join } = require('path');
 // use $ and @ instead of - and _
 // shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
 // 
-const shortId = function(text) {
+const shortId = function(filePath, text) {
+    console.log(filePath);
     return `${shortid.generate()}_${pinyin(pickupChinese(text, 4), { toneType: 'none', type: 'string' }).replace(/\W/g, '')}`
 }
 

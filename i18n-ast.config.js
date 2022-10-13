@@ -1,13 +1,11 @@
 module.exports = {
   entry: [
-    '/Users/david/Desktop/test_projects/my-app/src/'
-    // "./example/js/"
-    // "/Users/david/Desktop/projects/mfe-user-fund/shared/"
+    // '/Users/david/Desktop/test_projects/my-app/src/'
+    // "example/"
+    "/Users/david/Desktop/projects/mfe-user-fund/shared/"
   ], 
   output: "./u",
-  exclude: [
-    "**/node_modules/**/*",
-  ],
+  exclude: ['**/node_modules/**/*', 'resources/**/*'],
   locales: 'zh_CN,en_US,zh_HK',
   excelName: 'collect.xlsx',
   autoTranslate: {
