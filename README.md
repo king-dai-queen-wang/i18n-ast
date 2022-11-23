@@ -1,8 +1,6 @@
 # xt-i18n
 
 ## Install
-
-
 使用 npm:
 
 ```sh
