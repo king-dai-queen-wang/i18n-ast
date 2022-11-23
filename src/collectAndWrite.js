@@ -50,6 +50,7 @@ module.exports = function (option) {
       // 得到要写入的code 字符串
       const { isRewriting, code } = translate({
         filePath,
+        option: this.option,
         allTranslateWords,
         additionalTranslateWords,
         randomStr: this.option.randomFuc || this._randomStr,

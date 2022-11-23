@@ -11,7 +11,7 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
     hasImportModule: false,
   }
   // 这里引入i18n-jsx 然后执行，柯里化 返回plugin，（并且保存3个传参）
-  const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords,additionalTranslateWords, randomStr, filePath, arg);
+  const plugin = require('./plugin/plugin-i18n-jsx')(allTranslateWords,additionalTranslateWords, randomStr, filePath, arg, option);
 
   const transformOptions = {
     sourceType: "module",
@@ -41,7 +41,7 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
       plugin
     ]
   }
-  const bableObj = babel.transformFileSync(filePath, option || transformOptions)
+  const bableObj = babel.transformFileSync(filePath,  transformOptions)
   let { code, ast } = bableObj;
   // 通过plugin （判断文件头上是否引入过import intl from 'react-intl-universal';）设置arg.hasImportModule 属性
   const { translateWordsNum, hasImportModule } = arg;

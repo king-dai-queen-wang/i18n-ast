@@ -6,7 +6,7 @@ const { join } = require('path');
 // use $ and @ instead of - and _
 // shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
 // 
-const shortId = function(filePath, text) {
+const shortId = function(filePath, text, option) {
     console.log(filePath);
     return `${shortid.generate()}_${pinyin(pickupChinese(text, 4), { toneType: 'none', type: 'string' }).replace(/\W/g, '')}`
 }

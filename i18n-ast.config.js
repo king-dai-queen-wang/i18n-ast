@@ -2,7 +2,8 @@ module.exports = {
   entry: [
     // '/Users/david/Desktop/test_projects/my-app/src/'
     // "example/"
-    "/Users/david/Desktop/projects/mfe-user-fund/shared/"
+    // "/Users/david/Desktop/projects/mfe-user-fund/shared/"
+    "/Users/david/Desktop/projects/mfe-user-account/shared/"
   ], 
   output: "./u",
   exclude: ['**/node_modules/**/*', 'resources/**/*'],
