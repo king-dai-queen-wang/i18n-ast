@@ -2,6 +2,7 @@ const parseArgv = require("./options");
 const collectAndWrite = require("./collectAndWrite");
 const excelPack = require("./excel-pack");
 const excelUnpack = require("./excel-unpack");
+const analystAndWriteHTML = require("./analystAndWriteHTML");
 const option = parseArgv(process.argv);
 
 console.log("option", option);
@@ -12,6 +13,11 @@ const queue = [
     type: "collectAndWrite",
     params: ["entry", "output", "scan"],
     do: async () => await collectAndWrite(option).start(),
+  },
+  {
+    type: "analystAndWriteHTML",
+    params: ["analystAndWriteHTML"],
+    do: async () => await analystAndWriteHTML(option).start(),
   },
   {
     type: "excelPack",

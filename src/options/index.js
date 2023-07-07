@@ -10,6 +10,7 @@ program.version(package.version)
 // 只有命令行可配置的
 // program.option('-c, --config [path]', '配置文件地址（默认地址为根目录下 i18n-ast.config.js）')
 program.option('-s, --scan', '根据i18n-ast.config.js 进行扫描并且写入翻译文件')
+program.option('-aHTML, --analystAndWriteHTML', '根据i18n-ast.config.js 进行扫描并且写入翻译文件')
 // 只有配置文件都可配置的
 
 // 命令行及配置文件都可配置的

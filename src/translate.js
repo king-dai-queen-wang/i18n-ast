@@ -22,12 +22,13 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
     retainLines: true,
     ast: true,
     presets:[],
+    parserOpts: {errorRecovery: true},
     plugins: [
-      "@babel/plugin-syntax-jsx", 
-      ["@babel/plugin-syntax-typescript", {isTSX: true}],
+      "@babel/plugin-syntax-jsx",
+      ["@babel/plugin-syntax-typescript"],
       
       "@babel/plugin-syntax-object-rest-spread",
-      ["@babel/plugin-syntax-decorators", {version: "2021-12",decoratorsBeforeExport: true}],
+      ["@babel/plugin-syntax-decorators", {version: "legacy"}],
       "@babel/plugin-syntax-class-properties",
       "@babel/plugin-syntax-async-generators",
       "@babel/plugin-syntax-do-expressions",
@@ -53,7 +54,7 @@ function translate ({filePath, option, allTranslateWords,additionalTranslateWord
     }).code
     // 如果没有导入过则拼接 导入code
     if(!hasImportModule) {
-      code = 'import intl from \'react-intl-universal\';\n' + code;
+      code = 'import {TranslateService} from "@ngx-translate/core";\n' + code;
     }
   }
 

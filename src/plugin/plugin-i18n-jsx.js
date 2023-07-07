@@ -46,12 +46,13 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr,fileP
         rawValue: value,
       }
     })
+    // return t.StringLiteral(key)
     return t.CallExpression(
-      t.MemberExpression(
-        t.Identifier("intl"),
-        t.Identifier("get")
-      ),
-      setObjectExpression(variableObj) ? [t.StringLiteral(key), setObjectExpression(variableObj)] : [t.StringLiteral(key)]
+        t.memberExpression(
+            t.memberExpression(t.thisExpression(), t.identifier("translate")),
+            t.identifier("instant")
+        ),
+        setObjectExpression(variableObj) ? [t.StringLiteral(key), setObjectExpression(variableObj)] : [t.StringLiteral(key)]
     )
   }
 
@@ -74,12 +75,35 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr,fileP
     // }
     return {
       visitor: {
+        // constructor 里面加 translate: TranslateService 参数
+        ClassMethod(path, ast) {
+          if (path.node.kind === "constructor") {
+            // 检查是否已经存在名为 'translate' 的参数
+            const hasTranslateParam = path.node.params.some(
+                (param) => t.isIdentifier(param.parameter) && param.parameter.name === "translate"
+            );
+
+            if (!hasTranslateParam) {
+              // 创建参数节点 public translate: TranslateService
+              const translateParam = t.identifier("public translate");
+              const translateTypeAnnotation = t.tsTypeAnnotation(
+                  t.tsTypeReference(t.identifier("TranslateService"))
+              );
+              translateParam.typeAnnotation = translateTypeAnnotation;
+              translateParam.accessibility = "public";
+
+              // 将参数节点添加到构造函数参数列表的最前面
+              path.node.params.push(translateParam);
+            }
+            path.skip()
+          }
+        },
         // 只处理import节点
         ImportDeclaration(path) {
           try{
             const { node } = path;
             // 判断该文件有 是否导入过react-intl-universal ，则把 arg.hasImportModule标记true
-            if (node.source.value === 'react-intl-universal') {
+            if (node.source.value === '@ngx-translate/core') {
               arg.hasImportModule = true;
             }
             path.skip(); // 当前这条路径节点跳过
@@ -110,7 +134,7 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr,fileP
             if (path.node.callee.type === "MemberExpression") {
               try{
                 // 判断是intl.get(xxxx)方法的调用
-                if(path.node.callee.object.callee.object.name === 'intl' && path.node.callee.object.callee.property.name === 'get') {
+                if(path.node.callee.object.callee.object.name === 'this' && path.node.callee.object.callee.property.name === 'translate') {
                   // key = 拿到 intl.get(key).d(val) 格式 中的 key
                   const key = path.node.callee.object.arguments[0].value;
                   // if(path.node.callee.property.name === "d") {
@@ -122,13 +146,20 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr,fileP
               } catch(e) {
                 // console.log(e)
               }
-              path.skip()
+              // path.skip()
               return;
             }
           }catch(e){
             console.error('CallExpression', e)
           }
           
+        },
+        Literal(path) {
+          const { node } = path;
+          const { value } = node;
+          if (judgeChinese(value)) {
+            console.log(value)
+          }
         },
         StringLiteral(path) { // string
           try{
@@ -140,6 +171,10 @@ function reactPlugin (allTranslateWord,additionalTranslateWords, randomStr,fileP
                   value: value.trim().replace(/[\n\r]/gi, "\\n")
                 })));
               } else if(path.parent.type === 'ObjectProperty') {
+                path.replaceWith(makeReplace({
+                  value: value.trim().replace(/[\n\r]/gi, "\\n")
+                }));
+              } else if(path.parent.type === "ClassProperty") {
                 path.replaceWith(makeReplace({
                   value: value.trim().replace(/[\n\r]/gi, "\\n")
                 }));

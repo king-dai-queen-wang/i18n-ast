@@ -9,7 +9,13 @@ module.exports = {
       ignore: (exclude || []).map(e => `${path}/${e}`)
     })).flat(2)
   },
-
+    getHTMLFiles({ path, exclude=[] }) {
+        let pathes = (typeof path === 'string' ? [path] : path);
+        if(typeof exclude === 'string') exclude = exclude.split(',')
+        return pathes.map(path => glob.sync(`${path}/**/*.html`, {
+            ignore: (exclude || []).map(e => `${path}/${e}`)
+        })).flat(2)
+    },
   getALayerFiles({ path, exclude=[] }) {
     if(typeof exclude === 'string') exclude = exclude.split(',')
     return glob.sync(`${path}/*.js`, {

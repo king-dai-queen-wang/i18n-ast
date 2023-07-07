@@ -8,7 +8,7 @@ const { join } = require('path');
 // 
 const shortId = function(filePath, text, option) {
     console.log(filePath);
-    return `${shortid.generate()}_${pinyin(pickupChinese(text, 4), { toneType: 'none', type: 'string' }).replace(/\W/g, '')}`
+    return pinyin(text, { toneType: 'none', type: 'string' }).replace(/\s+/g, '').replace(/ü/g, 'v');
 }
 
 module.exports = {

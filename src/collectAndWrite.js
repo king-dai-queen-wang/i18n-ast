@@ -6,9 +6,7 @@ const chalk = require("./util/chalk");
 const util = require("./util");
 const { shortId } = require("./generateKey");
 
-// const BaiduTranslate = require("node-baidu-translate");
 const path = require("path");
-// const bdt = new BaiduTranslate("20220816001309546", "6qjHdX4wDxW06Q_efK6q");
 module.exports = function (option) {
   const collectAndWrite = {
     option: option,

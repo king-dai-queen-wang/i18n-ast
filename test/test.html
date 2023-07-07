@@ -1,0 +1,67 @@
+<div class="dark-bg container chart-page">
+    <div class="linear-container">
+        <div class="row top-row">
+            <div class="col-1 left-chart row">
+                <nz-card class="chart-card col-1">
+                    <div class="card-content with-out-padding">
+                        <div class="row card-query-bar with-out-padding ">
+                            <div class="card-header col-1">
+                                <app-card-header class="summary-row-title">
+                                    异常日志类型统计
+                                </app-card-header>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="chart pie-chart" (chartMouseOver)="onChartMouseover($event)" (chartInit)="onChartInit($event)" echarts [options]="pieOptions"></div>
+                            <div class="model-data-group">
+                                <div (mouseover)="onMouseOver(i)"
+                                     *ngFor="let item of logStat;let i = index"
+                                     [ngClass]="[i===activeIndex? 'active':'']"
+                                     class="model-data-row text-center">
+                  <span class="model-name ellipsis">
+                    <span class="model-color" [ngStyle]="{background: item.color}"></span>
+                    {{item.name}}:
+                  </span>
+                                    <span class="model-value">
+                    {{item.value}}
+                  </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nz-card>
+            </div>
+            <div class="col-1 right-chart">
+                <nz-card class="chart-card">
+                    <div class="card-content with-out-padding">
+                        <div class="row card-query-bar with-out-padding">
+                            <div class="card-header col-1">
+                                <app-card-header class="summary-row-title">
+                                    异常日志车机前三统计
+                                </app-card-header>
+                            </div>
+                        </div>
+                        <div class="chart" echarts [options]="barOptions"></div>
+                    </div>
+                </nz-card>
+            </div>
+        </div>
+        <nz-card class="div-bottom card-background chart-card">
+            <div class="card-content with-out-padding">
+                <div class="row card-query-bar with-out-padding" >
+                    <div class="card-header col-1">
+                        <app-card-header class="summary-row-title">
+                            整体车机异常趋势
+                        </app-card-header>
+                    </div>
+                    <nz-radio-group *appRightControl="actionCodes.logAnalysisRead.code">
+                        <label nz-radio-button nzValue="small" (click)="chooseTime(0)">30天</label>
+                        <label nz-radio-button nzValue="default" (click)="chooseTime(1)">12个月</label>
+                        <label nz-radio-button nzValue="large" (click)="chooseTime(2)">36个月</label>
+                    </nz-radio-group>
+                </div>
+                <div echarts [options]="lineOptions" class="chart"></div>
+            </div>
+        </nz-card>
+    </div>
+</div>

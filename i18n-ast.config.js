@@ -1,12 +1,24 @@
+const {pinyin} = require("pinyin-pro");
 module.exports = {
   entry: [
     // '/Users/david/Desktop/test_projects/my-app/src/'
-    // "example/"
+    // "example/angular"
     // "/Users/david/Desktop/projects/mfe-user-fund/shared/"
-    "/Users/david/Desktop/projects/mfe-user-account/shared/"
+    "C:\\projects\\web-front/src/"
   ], 
   output: "./u",
-  exclude: ['**/node_modules/**/*', 'resources/**/*'],
+  exclude: [
+    '**/node_modules/**/*',
+    'resources/**/*',
+    'coverages/**/*',
+    '.scannerwork/**/*',
+      'dist/**/*',
+      'e2e/**/*',
+    '**/*.spec.*'
+  ],
+  renderFunc: (filePath, value, option) => {
+    return pinyin(value, { toneType: 'none', type: 'string' }).replace(/\s+/g, '').replace(/ü/g, 'v');
+  },
   locales: 'zh_CN,en_US,zh_HK',
   excelName: 'collect.xlsx',
   autoTranslate: {

@@ -5,6 +5,8 @@
   "main": "bin/index.js",
   "scripts": {
     "start": "node bin/index.js --unpackExcel",
+    "start-c-html": "node bin/index.js --analystAndWriteHTML",
+    "start-p": "node bin/index.js --packExcel",
     "start-c": "node bin/index.js --scan && node bin/index.js --packExcel",
     "test-program": "node bin/index.js -e t -o u -x *-*.jsx -l a,b,c -p",
     "ready": "chmod 777 ./back.sh && ./back.sh",
@@ -45,13 +47,12 @@
     "commander": "^2.18.0",
     "glob": "^7.1.3",
     "google-translate-api": "^2.3.0",
+    "htmlparser2": "^9.0.0",
     "pinyin-pro": "^3.11.0",
     "prettier": "^2.7.1",
     "react-intl-universal": "^2.5.3",
     "shortid": "^2.2.16",
     "xlsx": "^0.14.0"
-    },
-  "devDependencies": {
   },
   "repository": {
     "type": "git",
